@@ -175,7 +175,7 @@ namespace ComprasEqComputo
                     {
                         if(nav[0] == empleado[0])
                         {
-                            dataGridView2.Rows.Add("NAV Solicitud:", nav[8]);
+                            dataGridView2.Rows.Add("NAV Solicitud:", nav[1]);
                             /*
                             empleado[25] = (String.IsNullOrEmpty(empleado[25]) ? "SIN PEDIDO" : empleado[25]);
                             dataGridView2.Rows.Add("NAV Pedido:", empleado[25]);

@@ -1,5 +1,4 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
@@ -46,6 +45,7 @@ namespace ComprasEqComputo
         public static List<String[]> lista_nav = new List<String[]>();
         public static List<String[]> lista_sisac = new List<String[]>();
 
+        public static List<String[]> lista_actualiza_compra = new List<String[]>();
 
         public Form1()
         {
@@ -61,6 +61,9 @@ namespace ComprasEqComputo
             lista_nomina.Clear();
             lista_nav.Clear();
             lista_sisac.Clear();
+
+            lista_actualiza_compra.Clear();
+
             dataGridView1.Rows.Clear();
 
             
@@ -74,7 +77,6 @@ namespace ComprasEqComputo
             pictureBox1.BringToFront();
             pictureBox1.Visible = true;
             label1.Visible = true;
-            label2.Visible = true;
 
             if (backgroundWorker1.IsBusy != true)
             {
@@ -86,6 +88,8 @@ namespace ComprasEqComputo
         {
             Actualizar();
         }
+
+
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -174,7 +178,7 @@ namespace ComprasEqComputo
                 MessageBox.Show("Error en la lectura de empleados.\nEl Programa se cerrara.\n\nMensaje: " + ex.Message, "Información del Equipo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 System.Windows.Forms.Application.Exit();
             }
-            
+
             //ALMACENAR LISTA DE EQUIPOS
             try
             {
@@ -218,178 +222,9 @@ namespace ComprasEqComputo
                         n[25] = nwReader["pedidocompra"].ToString();
 
                         //Cargar equipos pendientes y ultimo comentario (sin economico)
-                        //SOLO CARGA SI NO TIENEN ECONOMICO Y NO ESTAN ENTREGADOS.
-                        if (String.IsNullOrEmpty(nwReader["economico"].ToString()) && nwReader["entregada"].ToString() == "0" && nwReader["sitti_ti"].ToString() != "120317")
+                        if (String.IsNullOrEmpty(nwReader["economico"].ToString()) && nwReader["entregada"].ToString() == "0")
                         {
-                            Console.WriteLine("\nActualizando sitti: " + nwReader["sitti_ti"].ToString());
-                            //ageLabel.BeginInvoke(new Action(() => { ageLabel.Text = "test"; }));
-                            label1.BeginInvoke(new System.Action(() => { label1.Text = nwReader["sitti_ti"].ToString(); }));
-
-                            //CARGAR ULTIMO COMENTARIO Y SISAC Y # DE SOLICITUD
-                            try
-                            {
-                                using (SqlConnection conexion_historico = new SqlConnection(conexionsql_sitti))
-                                {
-                                    //Cargar ultimo comentario
-                                    conexion_historico.Open();
-                                    SqlCommand comm_h = new SqlCommand("SELECT TOP(1) * FROM [bd_SiTTi].[dbo].[ms_historico] where id_ms_ticket='" + nwReader["sitti_ti"].ToString() + "' " +
-                                        "ORDER BY id_ms_historico DESC", conexion_historico);
-                                    SqlDataReader historico = comm_h.ExecuteReader();
-                                    while (historico.Read())
-                                    {
-                                        String agregar_ultimo_comentario = "UPDATE " + nombrebd + " SET ultimo_comentario=@comentario WHERE sitti_ti=@sitti_ti";
-                                        SqlCommand comm_agrega_comment = new SqlCommand(agregar_ultimo_comentario, conexion_comprasequipos);
-
-                                        comm_agrega_comment.Parameters.AddWithValue("@comentario", historico["comentario"].ToString());
-                                        comm_agrega_comment.Parameters.AddWithValue("@sitti_ti", nwReader["sitti_ti"].ToString());
-
-                                        comm_agrega_comment.ExecuteNonQuery();
-                                        comm_agrega_comment.Parameters.Clear();
-                                        comm_agrega_comment.Dispose();
-                                        comm_agrega_comment = null;
-
-                                        DateTime fechacomentario = Convert.ToDateTime(historico["fecha_com"]);
-                                        n[20] = fechacomentario.ToString("dd/MM/yyyy") + ": " + historico["comentario"].ToString();
-
-                                    }
-
-
-                                    //Cargar SISAC y Solicitud (Actualiza dato)
-                                    SqlCommand comm_navysisac = new SqlCommand("SELECT scNAV_software,scNAV_hardware,no_SiSAC,status FROM [bd_SiTTi].[dbo].[ms_ticket] where id_ms_ticket='" + nwReader["sitti_ti"].ToString() + "'", conexion_historico);
-                                    SqlDataReader nav_y_sisac = comm_navysisac.ExecuteReader();
-                                    while (nav_y_sisac.Read())
-                                    {
-                                        String insertsisacynav = "UPDATE "+nombrebd+" SET sisac = @sisac, hardware=@hardware " +
-                                                        "WHERE sitti_ti='" + nwReader["sitti_ti"].ToString() + "'";
-                                        SqlCommand cmdIns = new SqlCommand(insertsisacynav, conexion_comprasequipos);
-
-                                        n[22] = nav_y_sisac["status"].ToString();
-
-                                        if (String.IsNullOrEmpty(nav_y_sisac["no_SiSAC"].ToString()))
-                                        {
-                                            cmdIns.Parameters.AddWithValue("@sisac", DBNull.Value);
-                                        }
-                                        else
-                                        {
-                                            cmdIns.Parameters.AddWithValue("@sisac", nav_y_sisac["no_SiSAC"].ToString());
-                                            n[16] = nav_y_sisac["no_SiSAC"].ToString();
-                                        }
-
-
-                                        if (String.IsNullOrEmpty(nav_y_sisac["scNAV_hardware"].ToString()) && String.IsNullOrEmpty(nav_y_sisac["scNAV_software"].ToString()))
-                                        {
-                                            cmdIns.Parameters.AddWithValue("@hardware", DBNull.Value);
-                                        }
-                                        else if(String.IsNullOrEmpty(nav_y_sisac["scNAV_hardware"].ToString()))
-                                        {
-                                            cmdIns.Parameters.AddWithValue("@hardware", nav_y_sisac["scNAV_software"].ToString());
-                                            n[17] = nav_y_sisac["scNAV_software"].ToString();
-                                        }
-                                        else
-                                        {
-                                            cmdIns.Parameters.AddWithValue("@hardware", nav_y_sisac["scNAV_hardware"].ToString());
-                                            n[17] = nav_y_sisac["scNAV_hardware"].ToString();
-                                        }
-                                        cmdIns.ExecuteNonQuery();
-                                        cmdIns.Parameters.Clear();
-                                        cmdIns.Dispose();
-                                        cmdIns = null;
-                                    }
-                                }
-                            }
-                            catch (Exception error)
-                            {
-                                MessageBox.Show("Error al actualizar ultimo comentario en del SiTTi " + nwReader["sitti_ti"].ToString() + "\n\nError: " + error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                System.Windows.Forms.Application.Exit();
-                            }
-
-
-
-                            //ACTUALIZAR PEDIDO DE COMPRA Y TRAER DATOS DE NAV
-                            try
-                            {
-                                if (!String.IsNullOrEmpty(n[17]))
-                                {
-                                    using (SqlConnection conexion_pedidocompra = new SqlConnection(conexionsql_nav))
-                                    {
-                                        conexion_pedidocompra.Open();
-                                        SqlCommand comm_pc = new SqlCommand("select l.Request as [solicitud], No_ as [activo], l.Description as [descripcion] , l.[No_ Purchase Order] as [pedido], " +
-                                            "l.[Note to Buyer] as [notacomprador], p.[User approval] as [autorizador], p.[Approved] as [aprobado], p.[Fecha_Hora Aprobación] as [horaaprobacion] " +
-                                            "from [" + n[7] + "$Lines purchase request] l " +
-                                            "LEFT JOIN [" + n[7] + "$Purchase Request Header ] p ON p.[Request]=l.Request where l.Request='" + n[17] + "'", conexion_pedidocompra);
-
-                                        SqlDataReader pedidocompra = comm_pc.ExecuteReader();
-                                        while (pedidocompra.Read())
-                                        {
-                                            String insertarpedido = "UPDATE " + nombrebd + " SET pedidocompra = @pedidocompra" +
-                                                            " WHERE cid='" + n[0] + "'";
-                                            SqlCommand cmdIns = new SqlCommand(insertarpedido, conexion_comprasequipos);
-                                            cmdIns.Parameters.AddWithValue("@pedidocompra", pedidocompra["pedido"].ToString());
-                                            cmdIns.ExecuteNonQuery();
-                                            cmdIns.Parameters.Clear();
-                                            cmdIns.Dispose();
-                                            cmdIns = null;
-
-                                            nav[0] = n[0]; //Obtiene CID
-                                            nav[1] = pedidocompra["solicitud"].ToString();  // Num de Solicitud
-                                            nav[2] = pedidocompra["activo"].ToString();     // Num de activo
-                                            nav[3] = pedidocompra["descripcion"].ToString();// Descripcion de la compra
-                                            nav[4] = pedidocompra["pedido"].ToString();     // Pedido de compra
-                                            nav[5] = pedidocompra["notacomprador"].ToString();  //  Nota de comprador
-                                            nav[6] = pedidocompra["autorizador"].ToString(); //Autorizador
-                                            nav[7] = pedidocompra["aprobado"].ToString();   // Si esta aprobado (1 o 0)
-                                            nav[8] = pedidocompra["horaaprobacion"].ToString(); //Hora de aprobacion
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception error)
-                            {
-                                MessageBox.Show("Error al actualizar pedido de compra del SiTTi " + nwReader["sitti_ti"].ToString() + "\n\nError: " + error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                System.Windows.Forms.Application.Exit();
-                            }
-
-
-
-
-                            //ACTUALIZAR DATOS DE SISAC
-                            if(!String.IsNullOrEmpty(n[16]))
-                            {
-                                try
-                                {
-                                    using (SqlConnection conexion_sisac = new SqlConnection(conexionsql_sisac))
-                                    {
-                                        conexion_sisac.Open();
-                                        SqlCommand comm_sisac = new SqlCommand("SELECT [No.] as [ticket], [Empresa(s)] as [empresa], Solicitante as [solicita], " +
-                                            "Comprador as [comprador], Estatus as [estatus], Código as [codigo], Descripción as [descripcion], Marca as [marca], " +
-                                            "[Último Precio] as [ultimoprecio] " +
-                                            "FROM [bd_SiSAC].[dbo].[LNJ_Tablas_Comparativas] where [No.]='" + n[16] + "'", conexion_sisac);
-
-                                        SqlDataReader sisacdb = comm_sisac.ExecuteReader();
-                                        while (sisacdb.Read())
-                                        {
-                                            sisac[0] = n[0];
-                                            sisac[1] = sisacdb["ticket"].ToString(); //Numero de Ticket sisac
-                                            sisac[2] = sisacdb["empresa"].ToString(); //Empresas
-                                            sisac[3] = sisacdb["solicita"].ToString(); //Quien levanta el Sisac
-                                            sisac[4] = sisacdb["comprador"].ToString(); //Quien es el comprador
-                                            sisac[5] = sisacdb["estatus"].ToString(); //Estatus actual
-                                            sisac[6] = sisacdb["codigo"].ToString(); //Codigo si existe
-                                            sisac[7] = sisacdb["descripcion"].ToString(); //Descripcion del producto
-                                            sisac[8] = sisacdb["marca"].ToString(); //Marca
-                                            sisac[9] = sisacdb["ultimoprecio"].ToString(); //Ultimo Precio
-                                        }
-                                    }
-                                }
-                                catch (Exception error)
-                                {
-                                    MessageBox.Show("Error al actualizar datos de SiSac del SiTTi " + nwReader["sitti_ti"].ToString() + "\nID Compra: "+n[0]+"\n\nError: " + error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    System.Windows.Forms.Application.Exit();
-                                }
-                            }
-
-                            lista_sisac.Add(sisac);
-                            lista_nav.Add(nav);
+                            label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando....."; }));
                             lista_compras.Add(n);
                         }
 
@@ -431,6 +266,211 @@ namespace ComprasEqComputo
                 MessageBox.Show("Error en la busqueda de compras pendientes.\nEl Programa se cerrara.\n\nMensaje: " + ex.Message, "Información del Equipo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 System.Windows.Forms.Application.Exit();
             }
+
+
+
+            //CARGAR DATOS
+            foreach (String[] compras in lista_compras)
+            {
+                // ULTIMO COMENTARIO, SISAC, SOLICITUD
+                try
+                {
+                    using (SqlConnection conexion_historico = new SqlConnection(conexionsql_sitti))
+                    {
+                        conexion_historico.Open();
+                        SqlCommand comm_h = new SqlCommand("SELECT TOP(1) h.*,t.scNAV_software,t.scNAV_hardware,t.no_SiSAC,t.status " +
+                            "FROM [bd_SiTTi].[dbo].[ms_historico] h LEFT JOIN [bd_SiTTi].[dbo].[ms_ticket] t " +
+                            "ON h.id_ms_ticket=t.id_ms_ticket where h.id_ms_ticket='" + compras[10] + "'  " +
+                            "ORDER BY h.id_ms_historico DESC", conexion_historico);
+                        SqlDataReader historico = comm_h.ExecuteReader();
+                        while (historico.Read())
+                        {
+                            /*
+                             * lista_actualiza_compra
+                             * 0 => CID
+                             * 1 => SiTTi_ti
+                             * 2 => Ultimo Comentario
+                             * 3 => Fecha Ultimo Comentario
+                             * 4 => Sisac
+                             * 5 => # Solicitud
+                             * 6 => Estatus SiTTi
+                             */
+                            String[] ultimo_comentario = new String[7];
+                            ultimo_comentario[0] = compras[0];
+                            ultimo_comentario[1] = compras[10];
+                            ultimo_comentario[2] = historico["comentario"].ToString();
+                            ultimo_comentario[3] = historico["fecha_com"].ToString();
+                            ultimo_comentario[6] = historico["status"].ToString();
+
+                            if (!String.IsNullOrEmpty(historico["no_SiSAC"].ToString()))
+                            {
+                                ultimo_comentario[4] = historico["no_SiSAC"].ToString();
+                            }
+
+
+                            if (String.IsNullOrEmpty(historico["scNAV_hardware"].ToString()) && String.IsNullOrEmpty(historico["scNAV_software"].ToString()))
+                            {
+                                //No guardar nada
+                            }
+                            else if (String.IsNullOrEmpty(historico["scNAV_hardware"].ToString()))
+                            {
+                                compras[17] = historico["scNAV_software"].ToString();
+                                ultimo_comentario[5] = historico["scNAV_software"].ToString();
+                            }
+                            else
+                            {
+                                compras[17] = historico["scNAV_hardware"].ToString();
+                                ultimo_comentario[5] = historico["scNAV_hardware"].ToString();
+                            }
+                            label1.BeginInvoke(new System.Action(() => { label1.Text = "Actualizando Comentarios: " + compras[0]; }));
+                            lista_actualiza_compra.Add(ultimo_comentario);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al leer el ultimo comentario del sitti: " + compras[10] + ".\n\nMensaje: " + ex.Message, "Compras", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+
+
+                //CARGAR PEDIDO DE COMPRA Y TRAER DATOS DE NAV
+                if (!String.IsNullOrEmpty(compras[17]))
+                {
+                    using (SqlConnection conexion_pedidocompra = new SqlConnection(conexionsql_nav))
+                    {
+                        conexion_pedidocompra.Open();
+                        SqlCommand comm_pc = new SqlCommand("select TOP(1) l.Request as [solicitud], No_ as [activo], l.Description as [descripcion] , l.[No_ Purchase Order] as [pedido], " +
+                            "l.[Note to Buyer] as [notacomprador], p.[User approval] as [autorizador], p.[Approved] as [aprobado], p.[Fecha_Hora Aprobación] as [horaaprobacion] " +
+                            "from [" + compras[7] + "$Lines purchase request] l " +
+                            "LEFT JOIN [" + compras[7] + "$Purchase Request Header ] p ON p.[Request]=l.Request where l.Request='" + compras[17] + "'", conexion_pedidocompra);
+
+                        SqlDataReader pedidocompra = comm_pc.ExecuteReader();
+                        while (pedidocompra.Read())
+                        {
+                            String[] nav = new String[9];
+                            nav[0] = compras[0]; //Obtiene CID
+                            nav[1] = pedidocompra["solicitud"].ToString();  // Num de Solicitud
+                            nav[2] = pedidocompra["activo"].ToString();     // Num de activo
+                            nav[3] = pedidocompra["descripcion"].ToString();// Descripcion de la compra
+                            nav[4] = pedidocompra["pedido"].ToString();     // Pedido de compra
+                            nav[5] = pedidocompra["notacomprador"].ToString();  //  Nota de comprador
+                            nav[6] = pedidocompra["autorizador"].ToString(); //Autorizador
+                            nav[7] = pedidocompra["aprobado"].ToString();   // Si esta aprobado (1 o 0)
+                            nav[8] = pedidocompra["horaaprobacion"].ToString(); //Hora de aprobacion
+                            lista_nav.Add(nav);
+                        }
+                    }
+                }
+
+
+
+                //CARGAR SISAC
+                if (!String.IsNullOrEmpty(compras[16]))
+                {
+                    try
+                    {
+                        using (SqlConnection conexion_sisac = new SqlConnection(conexionsql_sisac))
+                        {
+                            conexion_sisac.Open();
+                            SqlCommand comm_sisac = new SqlCommand("SELECT [No.] as [ticket], [Empresa(s)] as [empresa], Solicitante as [solicita], " +
+                                "Comprador as [comprador], Estatus as [estatus], Código as [codigo], Descripción as [descripcion], Marca as [marca], " +
+                                "[Último Precio] as [ultimoprecio] " +
+                                "FROM [bd_SiSAC].[dbo].[LNJ_Tablas_Comparativas] where [No.]='" + compras[16] + "'", conexion_sisac);
+                            SqlDataReader sisacdb = comm_sisac.ExecuteReader();
+                            while (sisacdb.Read())
+                            {
+                                String[] sisac = new String[10];
+                                sisac[0] = compras[0];
+                                sisac[1] = sisacdb["ticket"].ToString(); //Numero de Ticket sisac
+                                sisac[2] = sisacdb["empresa"].ToString(); //Empresas
+                                sisac[3] = sisacdb["solicita"].ToString(); //Quien levanta el Sisac
+                                sisac[4] = sisacdb["comprador"].ToString(); //Quien es el comprador
+                                sisac[5] = sisacdb["estatus"].ToString(); //Estatus actual
+                                sisac[6] = sisacdb["codigo"].ToString(); //Codigo si existe
+                                sisac[7] = sisacdb["descripcion"].ToString(); //Descripcion del producto
+                                sisac[8] = sisacdb["marca"].ToString(); //Marca
+                                sisac[9] = sisacdb["ultimoprecio"].ToString(); //Ultimo Precio
+                                lista_sisac.Add(sisac);
+                            }
+                        }
+                    }
+                    catch (Exception error)
+                    {
+                        MessageBox.Show("Error al actualizar datos de SiSac de la compra " + compras[0] + "\n\nError: " + error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        System.Windows.Forms.Application.Exit();
+                    }
+                }
+            }
+
+            //INSERTAR ULTIMO COMENTARIO, SISAC Y SOLICITUD
+            foreach (String[] comentario in lista_actualiza_compra)
+            {
+                try
+                {
+                    using (SqlConnection conexion_comprasequipos = new SqlConnection(conexionsql_infeq))
+                    {
+                        label1.BeginInvoke(new System.Action(() => { label1.Text = "Insertando Comentarios: " + comentario[1]; }));
+
+                        conexion_comprasequipos.Open();
+                        String agregar_ultimo_comentario = "UPDATE " + nombrebd + " SET sisac=@sisac, hardware=@hardware, ultimo_comentario=@comentario WHERE cid=@cid";
+                        //String agregar_ultimo_comentario = "UPDATE " + nombrebd + " SET sisac=@sisac, hardware=@hardware, ultimo_comentario=@comentario, pedidocompra=@pedido_de_compra WHERE cid=@cid";
+                        SqlCommand comm_agrega_comment = new SqlCommand(agregar_ultimo_comentario, conexion_comprasequipos);
+
+                        comm_agrega_comment.Parameters.AddWithValue("@comentario", comentario[2]);
+                        comm_agrega_comment.Parameters.AddWithValue("@cid", comentario[0]);
+                        
+                        //Revisar si esta vacio sisac
+                        if (String.IsNullOrEmpty(comentario[4]))
+                        {
+                            comm_agrega_comment.Parameters.AddWithValue("@sisac", DBNull.Value);
+                        }
+                        else
+                        {
+                            comm_agrega_comment.Parameters.AddWithValue("@sisac", comentario[4]);
+                        }
+                        //Revisar si esta vacio solicitud de compra
+                        if (String.IsNullOrEmpty(comentario[5]))
+                        {
+                            comm_agrega_comment.Parameters.AddWithValue("@hardware", DBNull.Value);
+                        }
+                        else
+                        {
+                            comm_agrega_comment.Parameters.AddWithValue("@hardware", comentario[5]);
+                        }
+
+                        comm_agrega_comment.ExecuteNonQuery();
+                        comm_agrega_comment.Parameters.Clear();
+                        comm_agrega_comment.Dispose();
+                        comm_agrega_comment = null;
+
+
+                        int i = 0;
+                        foreach (String[] compras in lista_compras)
+                        {
+                            if (compras[0] == comentario[0])
+                            {
+                                DateTime fechacomentario2 = Convert.ToDateTime(comentario[3]);
+                                lista_compras[i][20] = fechacomentario2.ToString("dd/MM/yyyy") + ": " + comentario[2];
+
+                                //Guardar Sisac
+                                lista_compras[i][16] = comentario[4];
+                                //Guardar Solicitud de compra
+                                lista_compras[i][17] = comentario[5];
+                                //Guardar Estatus del sitti
+                                lista_compras[i][22] = comentario[6];
+                            }
+                            i++;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al insertar datos de la compra: " + comentario[0] + ".\n\nMensaje: " + ex.Message, "Compras", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Application.Exit();
+                }
+            }
+
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -455,7 +495,8 @@ namespace ComprasEqComputo
                     {
                         stock_agregar= " (STOCK)";
                     }
-                    dataGridView1.Rows.Add(n[0], n[24], n[10], n[17], n[16], n[7], n[21]+ stock_agregar, fecha_solicita.ToShortDateString(), n[20], n[10], n[22]);
+
+                    dataGridView1.Rows.Add(n[0], n[24], n[10], n[17], n[16], n[7], n[21] + stock_agregar, fecha_solicita.ToShortDateString(), n[20], n[10], n[22]);
                     if (n[22] == "C" || n[22] == "S")
                     {
                         dataGridView1.Rows[contarceldas].DefaultCellStyle.BackColor = Color.PaleGreen;
@@ -475,7 +516,6 @@ namespace ComprasEqComputo
             pictureBox1.Visible = false;
 
             label1.Visible = false;
-            label2.Visible = false;
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.BackColor = Control.DefaultBackColor;
@@ -581,33 +621,5 @@ namespace ComprasEqComputo
             dani.ShowDialog();
         }
 
-        void ExportarDataGridViewExcel(DataGridView grd)
-        {
-            using (SaveFileDialog fichero = new SaveFileDialog { Filter = @"Excel (*.xls)|*.xls" })
-            {
-                if (fichero.ShowDialog() == DialogResult.OK)
-                {
-                    Microsoft.Office.Interop.Excel.Application aplicacion = new Microsoft.Office.Interop.Excel.Application();
-                    Workbook librosTrabajo = aplicacion.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
-                    Worksheet hojaTrabajo = (Worksheet)librosTrabajo.Worksheets.get_Item(1);
-                    int iCol = 0;
-                    foreach (DataGridViewColumn column in dataGridView1.Columns)
-                        if (column.Visible)
-                            hojaTrabajo.Cells[1, ++iCol] = column.HeaderText;
-                    for (int i = 0; i < grd.Rows.Count - 1; i++)
-                    {
-                        for (int j = 0; j < grd.Columns.Count; j++)
-                        {
-                            hojaTrabajo.Cells[i + 2, j + 1] = grd.Rows[i].Cells[j].Value.ToString();
-                        }
-                    }
-                    librosTrabajo.SaveAs(fichero.FileName, XlFileFormat.xlWorkbookNormal,
-                                          System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false,
-                                          XlSaveAsAccessMode.xlShared, false, false,
-                                          System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
-                    aplicacion.Quit();
-                }
-            }
-        }
     }
 }

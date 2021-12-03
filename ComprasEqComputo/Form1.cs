@@ -10,8 +10,8 @@ namespace ComprasEqComputo
 {
     public partial class Form1 : Form
     {
-        private String versiontext = "1.142";
-        private String version = "e083d1253220b10f8eacbe21a562c7e2";
+        private String versiontext = "1.143";
+        private String version = "eee7cebd02b7427301ea7eb108ab7f9d";
 
         public static String conexionsql_infeq = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
         public static String conexionsql_sitti = "server=148.223.153.43\\MSSQLSERVER1; database=bd_SiTTi;User ID=sa;Password=At3n4; integrated security = false ; MultipleActiveResultSets=True";
@@ -30,7 +30,7 @@ namespace ComprasEqComputo
         //Activarla para entregar directo un equipo
         public static Boolean registrar_pendientes = true;
 
-        /*  0 = Lista_comprass
+        /*  0 = Lista_compras
          *  1 = lista disponibles stock
          *  2 = lista disponibles usuarios
          *  3 = lista entregados

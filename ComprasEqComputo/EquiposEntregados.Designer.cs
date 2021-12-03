@@ -34,14 +34,14 @@ namespace ComprasEqComputo
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EquiposEntregados));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.buscar = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.economico = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fechaentrega = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sitti_ti_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buscar = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,10 +79,29 @@ namespace ComprasEqComputo
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(840, 310);
+            this.dataGridView1.Size = new System.Drawing.Size(927, 310);
             this.dataGridView1.TabIndex = 4;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            // 
+            // buscar
+            // 
+            this.buscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buscar.Location = new System.Drawing.Point(71, 3);
+            this.buscar.Name = "buscar";
+            this.buscar.Size = new System.Drawing.Size(856, 22);
+            this.buscar.TabIndex = 1;
+            this.buscar.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(12, 6);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 16);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Buscar:";
             // 
             // id
             // 
@@ -106,14 +125,13 @@ namespace ComprasEqComputo
             this.tipo.HeaderText = "Tipo";
             this.tipo.Name = "tipo";
             this.tipo.ReadOnly = true;
-            this.tipo.Width = 50;
+            this.tipo.Width = 150;
             // 
             // economico
             // 
             this.economico.HeaderText = "Economico";
             this.economico.Name = "economico";
             this.economico.ReadOnly = true;
-            this.economico.Width = 150;
             // 
             // fechaentrega
             // 
@@ -129,30 +147,11 @@ namespace ComprasEqComputo
             this.sitti_ti_id.ReadOnly = true;
             this.sitti_ti_id.Visible = false;
             // 
-            // buscar
-            // 
-            this.buscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buscar.Location = new System.Drawing.Point(71, 3);
-            this.buscar.Name = "buscar";
-            this.buscar.Size = new System.Drawing.Size(769, 22);
-            this.buscar.TabIndex = 1;
-            this.buscar.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 6);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 16);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Buscar:";
-            // 
             // EquiposEntregados
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 337);
+            this.ClientSize = new System.Drawing.Size(930, 337);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buscar);
             this.Controls.Add(this.dataGridView1);

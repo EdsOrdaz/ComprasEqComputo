@@ -10,8 +10,8 @@ namespace ComprasEqComputo
 {
     public partial class Form1 : Form
     {
-        private String versiontext = "1.143";
-        private String version = "eee7cebd02b7427301ea7eb108ab7f9d";
+        private String versiontext = "1.144";
+        private String version = "568b94fbcbf31d2d2a6093f7c825ba48";
 
         public static String conexionsql_infeq = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
         public static String conexionsql_sitti = "server=148.223.153.43\\MSSQLSERVER1; database=bd_SiTTi;User ID=sa;Password=At3n4; integrated security = false ; MultipleActiveResultSets=True";
@@ -96,6 +96,7 @@ namespace ComprasEqComputo
             //Validar version del programa
             try
             {
+                label1.BeginInvoke(new System.Action(() => { label1.Text = "Validando versión..."; }));
                 using (SqlConnection conexion_version = new SqlConnection(conexionsql_infeq))
                 {
                     conexion_version.Open();
@@ -168,6 +169,8 @@ namespace ComprasEqComputo
                         n[10] = nwReader["departamento"].ToString().TrimEnd(' ');
                         n[11] = nwReader["direccion"].ToString().TrimEnd(' ');
                         lista_nomina.Add(n);
+
+                        label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando empleado: "+n[0]; }));
                     }
                     conexion_nom.Close();
                 }
@@ -182,6 +185,7 @@ namespace ComprasEqComputo
             //ALMACENAR LISTA DE EQUIPOS
             try
             {
+                label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando compras"; }));
                 using (SqlConnection conexion_comprasequipos = new SqlConnection(conexionsql_infeq))
                 {
                     conexion_comprasequipos.Open();
@@ -224,7 +228,6 @@ namespace ComprasEqComputo
                         //Cargar equipos pendientes y ultimo comentario (sin economico)
                         if (String.IsNullOrEmpty(nwReader["economico"].ToString()) && nwReader["entregada"].ToString() == "0")
                         {
-                            label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando....."; }));
                             lista_compras.Add(n);
                         }
 
@@ -278,9 +281,10 @@ namespace ComprasEqComputo
                     using (SqlConnection conexion_historico = new SqlConnection(conexionsql_sitti))
                     {
                         conexion_historico.Open();
-                        SqlCommand comm_h = new SqlCommand("SELECT TOP(1) h.*,t.scNAV_software,t.scNAV_hardware,t.no_SiSAC,t.status " +
-                            "FROM [bd_SiTTi].[dbo].[ms_historico] h LEFT JOIN [bd_SiTTi].[dbo].[ms_ticket] t " +
-                            "ON h.id_ms_ticket=t.id_ms_ticket where h.id_ms_ticket='" + compras[10] + "'  " +
+                        SqlCommand comm_h = new SqlCommand("SELECT TOP(1) h.*,t.scNAV_software,t.scNAV_hardware,t.no_SiSAC,t.status,ci.nombre " +
+                            "FROM [bd_SiTTi].[dbo].[ms_historico] h LEFT JOIN [bd_SiTTi].[dbo].[ms_ticket] t ON h.id_ms_ticket=t.id_ms_ticket " +
+                            "LEFT JOIN [bd_SiTTi].[dbo].[cg_cis] ci ON t.id_cis=ci.id_cis " +
+                            "WHERE h.id_ms_ticket='" + compras[10] + "' " +
                             "ORDER BY h.id_ms_historico DESC", conexion_historico);
                         SqlDataReader historico = comm_h.ExecuteReader();
                         while (historico.Read())
@@ -294,13 +298,19 @@ namespace ComprasEqComputo
                              * 4 => Sisac
                              * 5 => # Solicitud
                              * 6 => Estatus SiTTi
+                             * 7 => scNAV_hardware (para insertar)
+                             * 8 => scNAV_software
+                             * 9 => CI
                              */
-                            String[] ultimo_comentario = new String[7];
+                            String[] ultimo_comentario = new String[11];
                             ultimo_comentario[0] = compras[0];
                             ultimo_comentario[1] = compras[10];
                             ultimo_comentario[2] = historico["comentario"].ToString();
                             ultimo_comentario[3] = historico["fecha_com"].ToString();
                             ultimo_comentario[6] = historico["status"].ToString();
+                            ultimo_comentario[7] = historico["scNAV_hardware"].ToString();
+                            ultimo_comentario[8] = historico["scNAV_software"].ToString();
+                            ultimo_comentario[9] = historico["nombre"].ToString();
 
                             if (!String.IsNullOrEmpty(historico["no_SiSAC"].ToString()))
                             {
@@ -322,7 +332,8 @@ namespace ComprasEqComputo
                                 compras[17] = historico["scNAV_hardware"].ToString();
                                 ultimo_comentario[5] = historico["scNAV_hardware"].ToString();
                             }
-                            label1.BeginInvoke(new System.Action(() => { label1.Text = "Actualizando Comentarios: " + compras[0]; }));
+
+                            label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando comentario: " + compras[0]; }));
                             lista_actualiza_compra.Add(ultimo_comentario);
                         }
                     }
@@ -360,6 +371,7 @@ namespace ComprasEqComputo
                             nav[8] = pedidocompra["horaaprobacion"].ToString(); //Hora de aprobacion
                             lista_nav.Add(nav);
                         }
+                        label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando NAV: " + compras[0]; }));
                     }
                 }
 
@@ -393,6 +405,7 @@ namespace ComprasEqComputo
                                 sisac[9] = sisacdb["ultimoprecio"].ToString(); //Ultimo Precio
                                 lista_sisac.Add(sisac);
                             }
+                            label1.BeginInvoke(new System.Action(() => { label1.Text = "Cargando SiSAC: " + compras[0]; }));
                         }
                     }
                     catch (Exception error)
@@ -410,11 +423,8 @@ namespace ComprasEqComputo
                 {
                     using (SqlConnection conexion_comprasequipos = new SqlConnection(conexionsql_infeq))
                     {
-                        label1.BeginInvoke(new System.Action(() => { label1.Text = "Insertando Comentarios: " + comentario[1]; }));
-
                         conexion_comprasequipos.Open();
                         String agregar_ultimo_comentario = "UPDATE " + nombrebd + " SET sisac=@sisac, hardware=@hardware, ultimo_comentario=@comentario WHERE cid=@cid";
-                        //String agregar_ultimo_comentario = "UPDATE " + nombrebd + " SET sisac=@sisac, hardware=@hardware, ultimo_comentario=@comentario, pedidocompra=@pedido_de_compra WHERE cid=@cid";
                         SqlCommand comm_agrega_comment = new SqlCommand(agregar_ultimo_comentario, conexion_comprasequipos);
 
                         comm_agrega_comment.Parameters.AddWithValue("@comentario", comentario[2]);
@@ -462,6 +472,8 @@ namespace ComprasEqComputo
                             }
                             i++;
                         }
+
+                        label1.BeginInvoke(new System.Action(() => { label1.Text = "Actualizando Comentarios: " + comentario[1]; }));
                     }
                 }
                 catch (Exception ex)

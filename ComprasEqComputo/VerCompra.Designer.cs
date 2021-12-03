@@ -46,10 +46,11 @@ namespace ComprasEqComputo
             this.eco_text = new System.Windows.Forms.Label();
             this.actualizar_datos = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.dato1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dato2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.estatuslabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -224,6 +225,20 @@ namespace ComprasEqComputo
             this.dataGridView2.TabIndex = 4;
             this.dataGridView2.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellClick);
             // 
+            // dato1
+            // 
+            this.dato1.HeaderText = "Column1";
+            this.dato1.Name = "dato1";
+            this.dato1.ReadOnly = true;
+            this.dato1.Width = 140;
+            // 
+            // dato2
+            // 
+            this.dato2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dato2.HeaderText = "Column1";
+            this.dato2.Name = "dato2";
+            this.dato2.ReadOnly = true;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -246,25 +261,23 @@ namespace ComprasEqComputo
             this.label2.TabIndex = 33;
             this.label2.Text = "Comentarios de SiTTi";
             // 
-            // dato1
+            // estatuslabel
             // 
-            this.dato1.HeaderText = "Column1";
-            this.dato1.Name = "dato1";
-            this.dato1.ReadOnly = true;
-            this.dato1.Width = 140;
-            // 
-            // dato2
-            // 
-            this.dato2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dato2.HeaderText = "Column1";
-            this.dato2.Name = "dato2";
-            this.dato2.ReadOnly = true;
+            this.estatuslabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.estatuslabel.ForeColor = System.Drawing.Color.Navy;
+            this.estatuslabel.Location = new System.Drawing.Point(395, 362);
+            this.estatuslabel.Name = "estatuslabel";
+            this.estatuslabel.Size = new System.Drawing.Size(222, 16);
+            this.estatuslabel.TabIndex = 34;
+            this.estatuslabel.Text = "ESTATUS";
+            this.estatuslabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // VerCompra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(629, 619);
+            this.Controls.Add(this.estatuslabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView2);
@@ -308,5 +321,6 @@ namespace ComprasEqComputo
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dato1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dato2;
+        private System.Windows.Forms.Label estatuslabel;
     }
 }

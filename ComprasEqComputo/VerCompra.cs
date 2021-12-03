@@ -94,6 +94,27 @@ namespace ComprasEqComputo
                     verpedido[23] = empleado[24]; //Tipo de compra (CPU o LAP)
                     verpedido[24] = empleado[25]; //Pedido de compra
 
+                    switch(verpedido[22])
+                    {
+                        case "PP":
+                            estatuslabel.Text = "Pendiente Proveedor";
+                            break;
+                        case "PU":
+                            estatuslabel.Text = "Pendiente Usuario";
+                            break;
+                        case "P":
+                            estatuslabel.Text = "En Proceso TI";
+                            break;
+                        case "S":
+                            estatuslabel.Text = "Solucionado";
+                            break;
+                        case "C":
+                            estatuslabel.Text = "Cerrado";
+                            break;
+                        default:
+                            estatuslabel.Text = "";
+                            break;
+                    }
 
 
                     //Entregar pienza o laptops

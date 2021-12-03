@@ -68,3 +68,5 @@ C:\Users\Soporte TI\Dropbox\EDSON\Proyectos\ComprasEqComputo\ComprasEqComputo\ob
 C:\Users\Soporte TI\Desktop\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.EliminarCompra.resources
 C:\Users\Soporte TI\Desktop\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.csproj.ResolveComReference.cache
 C:\Users\Soporte TI\Desktop\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.ReporteDaniel.resources
+C:\Users\Soporte TI\Dropbox\EDSON\Proyectos\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.csproj.ResolveComReference.cache
+C:\Users\Soporte TI\Dropbox\EDSON\Proyectos\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.ReporteDaniel.resources

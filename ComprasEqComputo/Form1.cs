@@ -10,6 +10,11 @@ namespace ComprasEqComputo
 {
     public partial class Form1 : Form
     {
+        /*
+         * V1.144
+         * - SE AGREGAN CAMPOS (SISAC, HARDWARE Y SOFTWARE) EN AGREGAR COMENTARIOS
+         * - SE ENVIA CORREO AL AGREGAR COMENTARIOS
+         */
         private String versiontext = "1.144";
         private String version = "568b94fbcbf31d2d2a6093f7c825ba48";
 

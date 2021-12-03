@@ -112,7 +112,7 @@ namespace ComprasEqComputo
                             estatuslabel.Text = "Cerrado";
                             break;
                         default:
-                            estatuslabel.Text = "";
+                            estatuslabel.Text = "En Proceso TI";
                             break;
                     }
 

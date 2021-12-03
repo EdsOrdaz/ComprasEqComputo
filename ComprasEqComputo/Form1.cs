@@ -518,7 +518,7 @@ namespace ComprasEqComputo
                     {
                         dataGridView1.Rows[contarceldas].DefaultCellStyle.BackColor = Color.PaleGreen;
                     }
-                    if (n[22] == "P")
+                    if (n[22] == "P" || String.IsNullOrEmpty(n[22]))
                     {
                         dataGridView1.Rows[contarceldas].DefaultCellStyle.BackColor = Color.LightSalmon;
                     }

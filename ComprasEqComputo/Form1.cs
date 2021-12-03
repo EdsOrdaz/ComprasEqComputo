@@ -30,7 +30,7 @@ namespace ComprasEqComputo
         //Activarla para entregar directo un equipo
         public static Boolean registrar_pendientes = true;
 
-        /*  0 = Lista_compras
+        /*  0 = Lista_comprass
          *  1 = lista disponibles stock
          *  2 = lista disponibles usuarios
          *  3 = lista entregados

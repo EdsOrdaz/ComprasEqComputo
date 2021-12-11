@@ -421,6 +421,7 @@ namespace ComprasEqComputo
                 }
             }
 
+            
             //INSERTAR ULTIMO COMENTARIO, SISAC Y SOLICITUD
             foreach (String[] comentario in lista_actualiza_compra)
             {
@@ -467,6 +468,7 @@ namespace ComprasEqComputo
                             {
                                 DateTime fechacomentario2 = Convert.ToDateTime(comentario[3]);
                                 lista_compras[i][20] = fechacomentario2.ToString("dd/MM/yyyy") + ": " + comentario[2];
+                                //lista_compras[i][20] = fechacomentario2.ToString("yyyy/MM/dd") + ": " + comentario[2];
 
                                 //Guardar Sisac
                                 lista_compras[i][16] = comentario[4];
@@ -512,6 +514,7 @@ namespace ComprasEqComputo
                     {
                         stock_agregar= " (STOCK)";
                     }
+
 
                     dataGridView1.Rows.Add(n[0], n[24], n[10], n[17], n[16], n[7], n[21] + stock_agregar, fecha_solicita.ToShortDateString(), n[20], n[10], n[22]);
                     if (n[22] == "C" || n[22] == "S")

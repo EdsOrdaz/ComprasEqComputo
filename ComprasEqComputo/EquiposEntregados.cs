@@ -27,7 +27,8 @@ namespace ComprasEqComputo
                     n[1] = (n[1] == "NO REGISTRADO") ? n[5] : n[1];
                     n[21] = (n[2] == "NO REGISTRADO") ? n[1] : n[21];
                     DateTime fecha_solicita = DateTime.Parse(n[12]);
-                    dataGridView1.Rows.Add(n[0], n[23], n[24], n[15], fecha_solicita.ToShortDateString(), n[10]);
+
+                    dataGridView1.Rows.Add(n[0], n[23], n[24], n[15], fecha_solicita.ToString("yyyy/MM/dd"), n[10]);
                 }
             }
         }
@@ -60,7 +61,7 @@ namespace ComprasEqComputo
                     String buscar_tipo = n[24].ToString().ToUpper();
                     if (buscar_usuario.Contains(buscar.Text.ToUpper()) || buscar_economico.Contains(buscar.Text.ToUpper()) || buscar_comprado_a.Contains(buscar.Text.ToUpper()) || buscar_tipo.Contains(buscar.Text.ToUpper()))
                     {
-                        dataGridView1.Rows.Add(n[0], n[23], n[24], n[15], fecha_solicita.ToShortDateString(), n[10]);
+                        dataGridView1.Rows.Add(n[0], n[23], n[24], n[15], fecha_solicita.ToString("yyyy/MM/dd"), n[10]);
                     }
                 }
             }

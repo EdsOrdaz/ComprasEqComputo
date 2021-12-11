@@ -57,7 +57,8 @@ namespace ComprasEqComputo
                     String buscar_usuario = n[23].ToString().ToUpper();
                     String buscar_economico = n[15].ToString().ToUpper();
                     String buscar_comprado_a = n[21].ToString().ToUpper();
-                    if (buscar_usuario.Contains(buscar.Text.ToUpper()) || buscar_economico.Contains(buscar.Text.ToUpper()) || buscar_comprado_a.Contains(buscar.Text.ToUpper()))
+                    String buscar_tipo = n[24].ToString().ToUpper();
+                    if (buscar_usuario.Contains(buscar.Text.ToUpper()) || buscar_economico.Contains(buscar.Text.ToUpper()) || buscar_comprado_a.Contains(buscar.Text.ToUpper()) || buscar_tipo.Contains(buscar.Text.ToUpper()))
                     {
                         dataGridView1.Rows.Add(n[0], n[23], n[24], n[15], fecha_solicita.ToShortDateString(), n[10]);
                     }

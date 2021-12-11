@@ -544,7 +544,7 @@ namespace ComprasEqComputo
         {
             if (e.RowIndex != -1)
             {
-                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null && !String.IsNullOrEmpty(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()))
+                if (e.ColumnIndex != 8 && dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null && !String.IsNullOrEmpty(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()))
                 {
                     Clipboard.SetText(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString());
                 }

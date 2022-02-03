@@ -11,12 +11,16 @@ namespace ComprasEqComputo
     public partial class Form1 : Form
     {
         /*
-         * V1.144
-         * - SE AGREGAN CAMPOS (SISAC, HARDWARE Y SOFTWARE) EN AGREGAR COMENTARIOS
-         * - SE ENVIA CORREO AL AGREGAR COMENTARIOS
+         * 
+         V1.145
+          - SE MEJORA LA DESCARGA DE REPORTE DE SITTIS DE DANIEL
+
+         V1.144
+          - SE AGREGAN CAMPOS (SISAC, HARDWARE Y SOFTWARE) EN AGREGAR COMENTARIOS
+          - SE ENVIA CORREO AL AGREGAR COMENTARIOS
          */
-        private String versiontext = "1.144";
-        private String version = "568b94fbcbf31d2d2a6093f7c825ba48";
+        private String versiontext = "1.145";
+        private String version = "14a742b8cccaf65017719898cf735d84";
 
         public static String conexionsql_infeq = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
         public static String conexionsql_sitti = "server=148.223.153.43\\MSSQLSERVER1; database=bd_SiTTi;User ID=sa;Password=At3n4; integrated security = false ; MultipleActiveResultSets=True";

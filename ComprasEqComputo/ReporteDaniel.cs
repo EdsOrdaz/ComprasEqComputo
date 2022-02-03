@@ -50,7 +50,7 @@ namespace ComprasEqComputo
 
         void ExportarDataGridViewExcel(DataGridView grd)
         {
-            using (SaveFileDialog fichero = new SaveFileDialog { Filter = @"Excel (*.xls)|*.xls" })
+            using (SaveFileDialog fichero = new SaveFileDialog { Filter = @"Excel (*.xls)|*.xls", FileName="Reporte SiTTi's" })
             {
                 if (fichero.ShowDialog() == DialogResult.OK)
                 {
@@ -58,9 +58,20 @@ namespace ComprasEqComputo
                     Workbook librosTrabajo = aplicacion.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
                     Worksheet hojaTrabajo = (Worksheet)librosTrabajo.Worksheets.get_Item(1);
                     int iCol = 0;
+                    int iCol2 = 0;
                     foreach (DataGridViewColumn column in dataGridView1.Columns)
+                    {
                         if (column.Visible)
-                            hojaTrabajo.Cells[1, ++iCol] = column.HeaderText;
+                        {
+                            ++iCol;
+                            iCol2 = iCol;
+                            hojaTrabajo.Cells[1, iCol2].Borders.LineStyle = XlLineStyle.xlContinuous;
+                            hojaTrabajo.Cells[1, iCol2].EntireRow.Font.Bold = true;
+                            hojaTrabajo.Cells[1, iCol2].Interior.Color = XlRgbColor.rgbGray;
+                            hojaTrabajo.Cells[1, iCol2].Font.Color = Color.White;
+                            hojaTrabajo.Cells[1, iCol2] = column.HeaderText;
+                        }
+                    }
                     for (int i = 0; i < grd.Rows.Count - 1; i++)
                     {
                         for (int j = 0; j < grd.Columns.Count; j++)
@@ -68,17 +79,17 @@ namespace ComprasEqComputo
                             if (grd.Rows[i].Cells[j].Value is null)
                             {
                                 hojaTrabajo.Cells[i + 2, j + 1] = "";
+                                hojaTrabajo.Cells[i + 2, j + 1].Borders.LineStyle = XlLineStyle.xlContinuous;
                             }
                             else
                             {
+                                hojaTrabajo.Cells[i + 2, j + 1].Borders.LineStyle = XlLineStyle.xlContinuous;
                                 hojaTrabajo.Cells[i + 2, j + 1] = grd.Rows[i].Cells[j].Value.ToString();
                             }
                         }
                     }
-                    librosTrabajo.SaveAs(fichero.FileName, XlFileFormat.xlWorkbookNormal,
-                                          System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false,
-                                          XlSaveAsAccessMode.xlShared, false, false,
-                                          System.Reflection.Missing.Value, System.Reflection.Missing.Value, System.Reflection.Missing.Value);
+                    aplicacion.ActiveWindow.DisplayGridlines = false;
+                    librosTrabajo.SaveAs(fichero.FileName, XlFileFormat.xlWorkbookNormal);
                     aplicacion.Quit();
                 }
             }

@@ -72,7 +72,7 @@ namespace ComprasEqComputo
                             hojaTrabajo.Cells[1, iCol2] = column.HeaderText;
                         }
                     }
-                    for (int i = 0; i < grd.Rows.Count - 1; i++)
+                    for (int i = 0; i <= grd.Rows.Count - 1; i++)
                     {
                         for (int j = 0; j < grd.Columns.Count; j++)
                         {

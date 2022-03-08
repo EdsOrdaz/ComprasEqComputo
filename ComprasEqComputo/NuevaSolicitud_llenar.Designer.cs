@@ -144,6 +144,7 @@ namespace ComprasEqComputo
             // 
             // text_nombre
             // 
+            this.text_nombre.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_nombre.Location = new System.Drawing.Point(81, 8);
             this.text_nombre.Name = "text_nombre";
             this.text_nombre.Size = new System.Drawing.Size(279, 20);
@@ -151,6 +152,9 @@ namespace ComprasEqComputo
             // 
             // text_puesto
             // 
+            this.text_puesto.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.text_puesto.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.text_puesto.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_puesto.Location = new System.Drawing.Point(78, 61);
             this.text_puesto.Name = "text_puesto";
             this.text_puesto.Size = new System.Drawing.Size(282, 20);
@@ -158,6 +162,9 @@ namespace ComprasEqComputo
             // 
             // text_cc
             // 
+            this.text_cc.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.text_cc.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.text_cc.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_cc.Location = new System.Drawing.Point(140, 89);
             this.text_cc.Name = "text_cc";
             this.text_cc.Size = new System.Drawing.Size(220, 20);
@@ -165,6 +172,9 @@ namespace ComprasEqComputo
             // 
             // text_empresa
             // 
+            this.text_empresa.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.text_empresa.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.text_empresa.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_empresa.Location = new System.Drawing.Point(86, 179);
             this.text_empresa.Name = "text_empresa";
             this.text_empresa.Size = new System.Drawing.Size(274, 20);
@@ -190,6 +200,9 @@ namespace ComprasEqComputo
             // 
             // text_dep
             // 
+            this.text_dep.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.text_dep.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.text_dep.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_dep.Location = new System.Drawing.Point(126, 119);
             this.text_dep.Name = "text_dep";
             this.text_dep.Size = new System.Drawing.Size(234, 20);
@@ -207,6 +220,9 @@ namespace ComprasEqComputo
             // 
             // text_dir
             // 
+            this.text_dir.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.text_dir.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.text_dir.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_dir.Location = new System.Drawing.Point(96, 149);
             this.text_dir.Name = "text_dir";
             this.text_dir.Size = new System.Drawing.Size(266, 20);
@@ -224,6 +240,9 @@ namespace ComprasEqComputo
             // 
             // text_ubi
             // 
+            this.text_ubi.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.text_ubi.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.text_ubi.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.text_ubi.Location = new System.Drawing.Point(96, 209);
             this.text_ubi.Name = "text_ubi";
             this.text_ubi.Size = new System.Drawing.Size(264, 20);

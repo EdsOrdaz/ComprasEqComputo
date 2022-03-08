@@ -29,6 +29,7 @@ namespace ComprasEqComputo
                     DateTime fecha_solicita = DateTime.Parse(n[12]);
 
                     dataGridView1.Rows.Add(n[0], n[23], n[24], n[15], fecha_solicita.ToString("yyyy/MM/dd"), n[10]);
+                    dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                 }
             }
         }

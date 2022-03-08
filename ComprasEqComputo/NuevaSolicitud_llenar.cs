@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
@@ -11,6 +13,7 @@ namespace ComprasEqComputo
         public NuevaSolicitud_llenar()
         {
             InitializeComponent();
+            AutoCompletar();
         }
 
         private void NuevaSolicitud_llenar_Load(object sender, EventArgs e)
@@ -294,5 +297,34 @@ namespace ComprasEqComputo
             return ahora;
         }
 
+
+        void AutoCompletar()
+        {
+            AutoCompleteStringCollection lista_puesto = new AutoCompleteStringCollection();
+            AutoCompleteStringCollection lista_cc = new AutoCompleteStringCollection();
+            AutoCompleteStringCollection lista_dep = new AutoCompleteStringCollection();
+            AutoCompleteStringCollection lista_dir = new AutoCompleteStringCollection();
+            AutoCompleteStringCollection lista_empresa = new AutoCompleteStringCollection();
+            AutoCompleteStringCollection lista_ubi = new AutoCompleteStringCollection();
+
+            if (Form1.lista_nomina.Any())
+            {
+                foreach (String[] n in Form1.lista_nomina)
+                {
+                    lista_puesto.Add(n[6]);
+                    lista_cc.Add(n[4]);
+                    lista_dep.Add(n[10]);
+                    lista_dir.Add(n[11]);
+                    lista_empresa.Add(n[7]);
+                    lista_ubi.Add(n[9]);
+                }
+            }
+            text_puesto.AutoCompleteCustomSource = lista_puesto;
+            text_cc.AutoCompleteCustomSource = lista_cc;
+            text_dep.AutoCompleteCustomSource = lista_dep;
+            text_dir.AutoCompleteCustomSource = lista_dir;
+            text_empresa.AutoCompleteCustomSource = lista_empresa;
+            text_ubi.AutoCompleteCustomSource = lista_ubi;
+        }
     }
 }

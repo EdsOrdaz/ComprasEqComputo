@@ -100,7 +100,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AsignarEconomico";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Asignar Economico";
             this.Load += new System.EventHandler(this.AsignarEconomico_Load);
             this.ResumeLayout(false);

@@ -25,75 +25,110 @@ namespace ComprasEqComputo
                 using (SqlConnection conexion2 = new SqlConnection(Form1.conexionsql_infeq))
                 {
                     conexion2.Open();
-                    String sql2 = "SELECT valor FROM Configuracion WHERE nombre='Compras_Tipos'";
+                    String sql2 = "SELECT * FROM ComprasEqComputo_tipo";
                     SqlCommand comm2 = new SqlCommand(sql2, conexion2);
                     SqlDataReader nwReader2 = comm2.ExecuteReader();
-                    if (nwReader2.Read())
+                    while (nwReader2.Read())
                     {
-                        String phrase = nwReader2["valor"].ToString();
-                        String[] words = phrase.Split(',');
-
-                        int i = 0;
-                        foreach (var word in words)
-                        {
-                            if (i < 1)
-                            {
-                                richTextBox1.AppendText($"{word}");
-                            }
-                            else
-                            {
-                                richTextBox1.AppendText(Environment.NewLine + $"{word}");
-                            }
-                            i++;
-                        }
+                        dataGridView1.Rows.Add(nwReader2["tid"].ToString(), nwReader2["tipo"].ToString());
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al obtener tipos de compras.\n\nMensaje: " + ex.Message, "Compras", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
+                Close();
                 return;
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        int LastNewRowIndex = -1;
+
+        private void dataGridView1_UserAddedRow(object sender, DataGridViewRowEventArgs e)
         {
-            String phrase = richTextBox1.Text;
-            String[] words = phrase.Split('\n');
+            LastNewRowIndex = e.Row.Index - 1;
+        }
 
+        private void dataGridView1_RowLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if(LastNewRowIndex > -1)
+            {
+                dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                DataGridViewRow dgvR = dataGridView1.Rows[LastNewRowIndex];
+                foreach (DataGridViewCell cell in dgvR.Cells)
+                {
+                    if (cell.ColumnIndex == 1)
+                    {
+                        if(!String.IsNullOrEmpty(cell.Value.ToString()))
+                        {
+                            try
+                            {
+                                int tid=0;
+                                using (SqlConnection conexion2 = new SqlConnection(Form1.conexionsql_infeq))
+                                {
+                                    conexion2.Open();
+                                    String sql2 = "INSERT INTO ComprasEqComputo_tipo (tipo) VALUES (@tipo)";
+                                    SqlCommand cmdIns = new SqlCommand(sql2, conexion2);
+                                    cmdIns.Parameters.AddWithValue("@tipo", cell.Value.ToString());
+                                    
+                                    cmdIns.ExecuteNonQuery();
+                                    cmdIns.Parameters.Clear();
 
-            richTextBox1.Text = "";
-            int i = 1;
-            String coma = ",";
-            foreach (var word in words)
-            {
-                if(i==words.Length)
-                {
-                    coma = "";
+                                    cmdIns.CommandText = "SELECT @@IDENTITY";
+
+                                    tid = Convert.ToInt32(cmdIns.ExecuteScalar());
+
+                                    dataGridView1.Rows[LastNewRowIndex].Cells[0].Value = tid;
+
+                                    cmdIns.Dispose();
+                                    cmdIns = null;
+                                }
+                            }
+                            catch(Exception mj)
+                            {
+                                dataGridView1.Rows[LastNewRowIndex].DefaultCellStyle.BackColor = Color.LightSalmon;
+                                MessageBox.Show("Error al agregar tipo de compra "+ cell.Value.ToString() + "\nERROR: "+mj.Message, "TIPO DE COMPRA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                dataGridView1.Enabled = false;
+                            }
+                        }
+                    }
                 }
-                richTextBox1.Text += $"{word}"+coma;
-                i++;
+                LastNewRowIndex = -1;
             }
-            try
+        }
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dataGridView1.EditingControl.GetType() == typeof(DataGridViewTextBoxEditingControl)) 
+            { 
+                ((DataGridViewTextBoxEditingControl)dataGridView1.EditingControl).CharacterCasing = CharacterCasing.Upper; 
+            }
+        }
+
+        private void dataGridView1_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            DataGridViewRow dgvR = dataGridView1.Rows[dataGridView1.CurrentRow.Index];
+            foreach (DataGridViewCell cell in dgvR.Cells)
             {
-                using (SqlConnection conexion2 = new SqlConnection(Form1.conexionsql_infeq))
+                if (cell.ColumnIndex == 0)
                 {
-                    conexion2.Open();
-                    String sql2 = "UPDATE Configuracion SET valor = '" + richTextBox1.Text + "' WHERE nombre = 'Compras_Tipos'";
-                    SqlCommand comm2 = new SqlCommand(sql2, conexion2);
-                    SqlDataReader nwReader2 = comm2.ExecuteReader();
+                    try
+                    {
+                        using (SqlConnection conexion2 = new SqlConnection(Form1.conexionsql_infeq))
+                        {
+                            conexion2.Open();
+                            String sql2 = "DELETE FROM ComprasEqComputo_tipo WHERE tid='" + Convert.ToInt32(cell.Value) + "'";
+                            SqlCommand comm2 = new SqlCommand(sql2, conexion2);
+                            SqlDataReader nwReader2 = comm2.ExecuteReader();
+                        }
+                    }
+                    catch (Exception mj)
+                    {
+                        MessageBox.Show("Error al eliminar tipo de compra " + cell.Value.ToString() + "\nERROR: " + mj.Message, "TIPO DE COMPRA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        dataGridView1.Enabled = false;
+                    }
                 }
-                MessageBox.Show("Tipos de compras guardados.", "Compras", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                Close();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al guardar tipos de compras..\n\nMensaje: " + ex.Message, "Información del Equipo", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
-                return;
-            }
-            richTextBox1.Text = "";
         }
     }
 }

@@ -79,7 +79,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EliminarCompra";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Eliminar Compra";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);

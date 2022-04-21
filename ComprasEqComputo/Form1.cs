@@ -12,19 +12,21 @@ namespace ComprasEqComputo
     {
         /*
          * 
-         V1.15
-          - SE AGREGA AUTOCOMPLEMENTAR EN USUARIO NO REGISTRADO EN NOMINA
+V1.15.1
+    - SE MODIFICA TIPO DE COMPRA Y SE PREGUNTA AL SOLICITARLA.
+V1.15
+    - SE AGREGA AUTOCOMPLEMENTAR EN USUARIO NO REGISTRADO EN NOMINA
 
-         V1.145
-          - SE MEJORA LA DESCARGA DE REPORTE DE SITTIS DE DANIEL
-          - SE REPARA LA LISTA DE REPORTES (SIEMPRE FALTABA 1)
+V1.145
+    - SE MEJORA LA DESCARGA DE REPORTE DE SITTIS DE DANIEL
+    - SE REPARA LA LISTA DE REPORTES (SIEMPRE FALTABA 1)
 
-         V1.144
-          - SE AGREGAN CAMPOS (SISAC, HARDWARE Y SOFTWARE) EN AGREGAR COMENTARIOS
-          - SE ENVIA CORREO AL AGREGAR COMENTARIOS
+V1.144
+    - SE AGREGAN CAMPOS (SISAC, HARDWARE Y SOFTWARE) EN AGREGAR COMENTARIOS
+    - SE ENVIA CORREO AL AGREGAR COMENTARIOS
          */
-        private String versiontext = "1.15";
-        private String version = "0083e57a258edd18b949d3afbf6cfc2a";
+        private String versiontext = "1.15.1";
+        private String version = "570da8f833b670c948bc77ca42c17dae";
 
         public static String conexionsql_infeq = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
         public static String conexionsql_sitti = "server=148.223.153.43\\MSSQLSERVER1; database=bd_SiTTi;User ID=sa;Password=At3n4; integrated security = false ; MultipleActiveResultSets=True";

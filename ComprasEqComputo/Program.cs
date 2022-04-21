@@ -16,7 +16,7 @@ namespace ComprasEqComputo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new ReporteDaniel());
+            //Application.Run(new TipoCompra());
             Application.Run(new Form1());
         }
     }

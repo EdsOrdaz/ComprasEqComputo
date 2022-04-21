@@ -18,23 +18,18 @@ namespace ComprasEqComputo
 
         private void NuevaSolicitud_llenar_Load(object sender, EventArgs e)
         {
+            tipo.Items.Add("");
             try
             {
                 using (SqlConnection conexion2 = new SqlConnection(Form1.conexionsql_infeq))
                 {
                     conexion2.Open();
-                    String sql2 = "SELECT valor FROM Configuracion WHERE nombre='Compras_Tipos'";
+                    String sql2 = "SELECT * FROM ComprasEqComputo_tipo";
                     SqlCommand comm2 = new SqlCommand(sql2, conexion2);
                     SqlDataReader nwReader2 = comm2.ExecuteReader();
-                    if (nwReader2.Read())
+                    while(nwReader2.Read())
                     {
-                        String phrase = nwReader2["valor"].ToString();
-                        String[] words = phrase.Split(',');
-
-                        foreach (var word in words)
-                        {
-                            tipo.Items.Add($"{word}");
-                        }
+                        tipo.Items.Add(nwReader2["tipo"].ToString());
                     }
                 }
             }
@@ -57,6 +52,16 @@ namespace ComprasEqComputo
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if(String.IsNullOrEmpty(tipo.SelectedItem.ToString()))
+            {
+                MessageBox.Show("Debes seleccionar un tipo de compra.", "Nueva Solicitud", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            DialogResult dialogResult = MessageBox.Show("¿Comprar "+ tipo.SelectedItem.ToString()+"?", "Nueva Solicitud", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
             if (sittiusuario.Value < 1)
             {
                 MessageBox.Show("El # de SiTTi de usuario debe ser mayor a 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -64,7 +69,6 @@ namespace ComprasEqComputo
             }
 
             int sitti_generado = 0;
-            
             //insertar sitti de compra (de Edson a Daniel)
             using (SqlConnection conexion = new SqlConnection(Form1.conexionsql_sitti))
             {

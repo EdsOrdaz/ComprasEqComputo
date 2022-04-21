@@ -149,7 +149,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EquiposDisponibleStock";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Equipos de Stock Disponibles";
             this.Load += new System.EventHandler(this.EquiposDisponibleStock_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

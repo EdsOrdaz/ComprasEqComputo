@@ -294,7 +294,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "VerCompra";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Ver Compra Pendiente";
             this.Load += new System.EventHandler(this.VerCompra_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

@@ -199,7 +199,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AgregarComentario";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Agregar Comentario";
             this.Load += new System.EventHandler(this.AgregarComentario_Load);
             this.ResumeLayout(false);

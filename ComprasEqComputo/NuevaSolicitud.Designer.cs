@@ -360,7 +360,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NuevaSolicitud";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Nueva Solicitud";
             this.Load += new System.EventHandler(this.NuevaSolicitud_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

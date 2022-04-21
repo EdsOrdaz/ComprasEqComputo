@@ -329,7 +329,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NuevaSolicitud_llenar";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Nueva Solicitud";
             this.Load += new System.EventHandler(this.NuevaSolicitud_llenar_Load);
             ((System.ComponentModel.ISupportInitialize)(this.sittiusuario)).EndInit();

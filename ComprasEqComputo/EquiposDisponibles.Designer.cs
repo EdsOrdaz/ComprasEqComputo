@@ -147,7 +147,7 @@ namespace ComprasEqComputo
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "EquiposDisponibles";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Equipos Disponibles";
             this.Load += new System.EventHandler(this.EquiposDisponibles_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

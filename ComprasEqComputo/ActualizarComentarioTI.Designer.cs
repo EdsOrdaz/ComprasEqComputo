@@ -76,7 +76,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ActualizarComentarioTI";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Actualizar Comentario T.I.";
             this.Load += new System.EventHandler(this.ActualizarComentarioTI_Load);
             this.ResumeLayout(false);

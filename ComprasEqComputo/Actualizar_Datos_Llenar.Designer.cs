@@ -266,7 +266,7 @@ namespace ComprasEqComputo
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Actualizar_Datos_Llenar";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Datos del Empleado";
             this.Load += new System.EventHandler(this.Actualizar_Datos_Llenar_Load);
             this.ResumeLayout(false);

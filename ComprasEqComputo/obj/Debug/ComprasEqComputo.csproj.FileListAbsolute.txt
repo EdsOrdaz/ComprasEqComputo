@@ -70,3 +70,4 @@ C:\Users\Soporte TI\Desktop\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasE
 C:\Users\Soporte TI\Desktop\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.ReporteDaniel.resources
 C:\Users\Soporte TI\Dropbox\EDSON\Proyectos\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.csproj.ResolveComReference.cache
 C:\Users\Soporte TI\Dropbox\EDSON\Proyectos\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.ReporteDaniel.resources
+C:\Users\Soporte TI\Dropbox\EDSON\Proyectos\ComprasEqComputo\ComprasEqComputo\obj\Debug\ComprasEqComputo.csproj.SuggestedBindingRedirects.cache

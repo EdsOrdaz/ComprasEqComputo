@@ -25,8 +25,8 @@ V1.144
     - SE AGREGAN CAMPOS (SISAC, HARDWARE Y SOFTWARE) EN AGREGAR COMENTARIOS
     - SE ENVIA CORREO AL AGREGAR COMENTARIOS
          */
-        private String versiontext = "1.15.1";
-        private String version = "570da8f833b670c948bc77ca42c17dae";
+        private String versiontext = "1.15.2";
+        private String version = "8314ec4e5080580aa14ff5154348c1942e89c2b9";
 
         public static String conexionsql_infeq = "server=148.223.153.37,5314; database=InfEq;User ID=eordazs;Password=Corpame*2013; integrated security = false ; MultipleActiveResultSets=True";
         public static String conexionsql_sitti = "server=148.223.153.43\\MSSQLSERVER1; database=bd_SiTTi;User ID=sa;Password=At3n4; integrated security = false ; MultipleActiveResultSets=True";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -154,32 +155,42 @@ namespace ComprasEqComputo
             }
 
 
-            //ENVIO DE CORREO GMAIL
+
+            //ENVIO CORREO
             try
             {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                MailMessage mailMessage = new MailMessage();
+                MailAddressCollection to = mailMessage.To;
+                object[] obj = new object[1] { correo };
+                object[] array = obj;
+                bool[] obj2 = new bool[1] { true };
+                bool[] array2 = obj2;
+                NewLateBinding.LateCall(to, null, "Add", obj, null, null, obj2, IgnoreReturn: true);
+                if (array2[0])
+                {
+                    correo = (string)RuntimeHelpers.GetObjectValue(array[0]);
+                }
+                mailMessage.Bcc.Add("notificaciones@unne.com.mx");
+                mailMessage.From = new MailAddress("notificaciones@unne.com.mx");
+                mailMessage.Subject = "SiTTi - Ticket " + VerCompra.verpedido[10] + ": " + ci;
+                mailMessage.Body = "<span style=\"font-family:Verdana; font-size: 10pt;\">" + label4.Text.ToUpper() + " actualizó el ticket con el siguiente comentario...<br><br><b>" + richTextBox1.Text + "</b><br><br>En caso de ser necesario, favor de ingresar al SiTTi [http://148.223.153.43/SiTTi] para dar seguimiento y/o adjuntar información solicitada.</span><span style=\"font-family: Verdana; font-size: 9pt; color: #FF0000; \"><br><br> <b>Nota: Favor de <u>no</u> contestar a este correo</b></span>";
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Priority = MailPriority.Normal;
+                SmtpClient smtpClient = new SmtpClient();
+                smtpClient.Host = "189.254.9.189";
+                smtpClient.Port = 587;
+                smtpClient.EnableSsl = false;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("notificaciones", "t78Q7JBkmucE");
 
-                mail.From = new MailAddress("soporte.unne.sitti@gmail.com", "SiTTi", Encoding.UTF8);
-                mail.To.Add(correo);
-                mail.Subject = "Ticket " + VerCompra.verpedido[10] + ": " + ci;
-                mail.Body = "<span style=\"font-family:Verdana; font-size: 10pt;\">" + label4.Text.ToUpper() + " actualizó el ticket con el siguiente comentario...<br><br><b>" + richTextBox1.Text + "</b><br><br>En caso de ser necesario, favor de ingresar al SiTTi [http://148.223.153.43/SiTTi] para dar seguimiento y/o adjuntar información solicitada.</span><span style=\"font-family: Verdana; font-size: 9pt; color: #FF0000; \"><br><br> <b>Nota: Favor de <u>no</u> contestar a este correo</b></span>";
-                mail.IsBodyHtml = true;
-
-                SmtpServer.Port = 587;
-                SmtpServer.UseDefaultCredentials = false;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("soporte.unne.sitti@gmail.com", "Corpame*2013");
-                SmtpServer.EnableSsl = true;
-
-                SmtpServer.Send(mail);
-
+                smtpClient.Send(mailMessage);
                 MessageBox.Show("Comentario insertado.", "Compras", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                MessageBox.Show("Error al enviar correo.\n\nError: "+ex.Message,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Error al enviar correo.\n\nError: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             button1.Enabled = true;
